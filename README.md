@@ -1,4 +1,4 @@
-
+JAMES SCHOLAR PROJECT CS101  - SPRING 2026
    
     (Anna W) Part of the project seeks to determine whether traffic control devices were effective
 in deterring traffic accidents in Chicago, which traffic control devices were most effective, and 
