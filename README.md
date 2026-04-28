@@ -9,6 +9,19 @@ in deterring traffic accidents in Chicago, which traffic control devices were mo
 whether the traffic device condition matters. This part of the project looks at the 
 `“TRAFFIC_CONTROL_DEVICE”` and `“DEVICE_CONDITION”` columns.
 
+## How to Run
+1. Setup virtual environment.
+```shell
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+2. Open JSrcommon.ipynb or run 
+```shell
+python main.py
+```
+
 ## Conclusions
 ### Data
 Data Conclusions – Chicago traffic crash data is from between dates  March 3, 2013, and March 16, 2026
