@@ -5,10 +5,10 @@
 Part of the project seeks to determine whether traffic control devices were effective
 in deterring traffic accidents in Chicago, which traffic control devices were most effective, and 
 whether the traffic device condition, weather, or lighting matters. This part of the project looks at the 
-`“TRAFFIC_CONTROL_DEVICE”`,`“DEVICE_CONDITION”`, '"WEATHER_CONDITION"', and '"LIGHTING_CONDITION"' columns.
+`“TRAFFIC_CONTROL_DEVICE”`,`“DEVICE_CONDITION”`, `"WEATHER_CONDITION"`, and `"LIGHTING_CONDITION"` columns.
 
 Another part of the project does some time analysis on when the crashes occur. This part of the project
-looks at the '"CRASH_DAY_OF_WEEK"', '"CRASH_HOUR"', '"CRASH_MONTH"', and '"CRASH_DATE"' columns.
+looks at the `"CRASH_DAY_OF_WEEK"`, `"CRASH_HOUR"`, `"CRASH_MONTH"`, and `"CRASH_DATE"` columns.
 
 ## How to Run
 1. Setup virtual environment.
