@@ -114,7 +114,7 @@ def main():
     ] = "No Control Device"
 
 
-    plt.figure(figsize = (10,6))
+    fig = plt.figure(figsize = (10,6))
 
     ax = sns.countplot(
         data=df_wo_unkn, x="CONTROL_EXISTS", hue="CONTROL_EXISTS"
@@ -150,7 +150,7 @@ def main():
         "magma", len(counts)
     )  # use only as many colors as needed
 
-    plt.figure(figsize = (10,6))
+    fig = plt.figure(figsize = (10,6))
     ax = sns.barplot(
         x=counts.index,
         y=counts.values,
