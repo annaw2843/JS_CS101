@@ -20,7 +20,7 @@ pip install -r requirements.txt
 
 2. Open JSrcommon.ipynb or run 
 ```shell
-python main.py
+streamlit run main.py
 ```
 
 ## Conclusions
