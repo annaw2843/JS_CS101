@@ -10,6 +10,8 @@ whether the traffic device condition, weather, or lighting matters. This part of
 Another part of the project does some time analysis on when the crashes occur. This part of the project
 looks at the `"CRASH_DAY_OF_WEEK"`, `"CRASH_HOUR"`, `"CRASH_MONTH"`, and `"CRASH_DATE"` columns.
 
+We used the dataset found at https://catalog.data.gov/dataset/traffic-crashes-crashes.
+
 ## How to Run
 1. Setup virtual environment.
 ```shell
