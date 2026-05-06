@@ -119,7 +119,7 @@ def main():
     ax = sns.countplot(
         data=df_wo_unkn, x="CONTROL_EXISTS", hue="CONTROL_EXISTS"
     )
-    plt.suptitle("SEABORN COUNTPLOT How Many Crashes With and Without Traffic Control")
+    plt.suptitle("How Many Crashes With and Without Traffic Control")
     plt.title(f"Dates: {earliest_date} - {latest_date}")
     plt.xlabel("Existence of Traffic Control Device")
     plt.ylabel("Count")
@@ -159,7 +159,7 @@ def main():
         legend=False,
     )
     plt.suptitle(
-        "SEABORN BARPLOT How Many Crashes With and Without Traffic Control (Percentages)",
+        "How Many Crashes With and Without Traffic Control (Percentages)",
         y=0.95,
     )
     plt.title(f"Dates: {earliest_date} - {latest_date}")
@@ -275,6 +275,66 @@ def main():
         st.set_page_config(layout="wide")
         st.pyplot(fig)
 
+    ##########################################################################
+    # PLOTLY EXPRESS COUNTPLOT...Accident occurred in Clear Weather vs. Inclement?
+    ##########################################################################
+
+    df_weather = df[df["WEATHER"] != 'UNK'].copy()
+    df_weather["WEATHER_CLEAR"] = df_weather["WEATHER"].apply(
+        lambda x: "CLEAR" if x == "CLEAR" else "INCLEMENT"
+    )
+
+    fig = px.histogram( df_weather,
+                        x='WEATHER_CLEAR',
+                        text_auto=True )
+
+    fig.update_layout(
+        title= {
+            "text": f"<b>Number of Accidents in Clear vs. Non Clear Weather</b><br>"
+                    f"<sup><b>Dates: {earliest_date} - {latest_date}</b></sup>",
+            'x': 0.5,
+            'xanchor': 'center'
+    } )
+
+    fig.update_xaxes(title = "<b>Weather</b>", automargin=True)
+
+    if 'ipykernel' in sys.modules:
+        fig.show()
+    else:
+        st.set_page_config(layout="wide")
+        st.plotly_chart(fig, width='stretch')
+
+    ##########################################################################
+    # PLOTLY EXPRESS COUNTPLOT...Accident occurred in Clear Weather vs. Inclement? in percentages
+    ##########################################################################
+    df_pct = df_weather['WEATHER_CLEAR'].value_counts(normalize=True).reset_index()
+    df_pct.columns = ['WEATHER_CLEAR', 'percentage']
+    df_pct['percentage'] *= 100
+
+    fig = px.histogram( df_pct,
+                        x='WEATHER_CLEAR',
+                        y='percentage',
+                        histfunc='sum',
+                        text_auto=".1f" )
+
+    fig.update_layout(
+        title= {
+            "text": f"<b>Number of Accidents in Clear vs. Non Clear Weather (%)</b><br>"
+                    f"<sup><b>Dates: {earliest_date} - {latest_date}</b></sup>",
+            'x': 0.5,
+            'xanchor': 'center'
+    } )
+
+    fig.update_xaxes(title = "<b>Weather</b>", automargin=True, autorange='reversed')
+    fig.update_traces(texttemplate="%{y:.1f}%", textposition='inside')
+
+    if 'ipykernel' in sys.modules:
+        fig.show()
+    else:
+        st.set_page_config(layout="wide")
+        st.plotly_chart(fig, width='stretch')
+
+    
     ######################################################
     # PLOTLY EXPRESS HEATMAP
     # Trying to detect correlation between traffic device
@@ -332,6 +392,99 @@ def main():
     else:
         st.set_page_config(layout="wide")
         st.plotly_chart(fig, width='stretch')
+
+
+    ##########################################################################
+    # ALTAIR Plots...investigating the PRIMARY CONTRIBUTORY CAUSE column
+    # - ALTAIR limits its dataset size to 5000 rows, so sampling was necessary to obtain the 5000 rows.
+    # - Because of the sampling, the results are nondeterministic and can vary from run to run.
+    ##########################################################################
+
+    df["CAUSE"] = df['PRIM_CONTRIBUTORY_CAUSE'].replace( {
+         'DRIVING SKILLS/KNOWLEDGE/EXPERIENCE': 'DRIVING SKILLS',
+         'UNDER THE INFLUENCE OF ALCOHOL/DRUGS (USE WHEN ARREST IS EFFECTED)': "ALCH/DRUGS ARREST",
+         'HAD BEEN DRINKING (USE WHEN ARREST IS NOT MADE)': 'ALCH/DRUGS NO-ARR',
+         'FAILING TO REDUCE SPEED TO AVOID CRASH': "SPEED BY CRASH",
+         "FOLLOWING TOO CLOSELY": "TAILGATING",
+         'OPERATING VEHICLE IN ERRATIC, RECKLESS, CARELESS, NEGLIGENT OR AGGRESSIVE MANNER': "RECKLESS",
+         'DISTRACTION - OTHER ELECTRONIC DEVICE (NAVIGATION DEVICE, DVD PLAYER, ETC.)': "ELECTRONICS",
+         'FAILING TO YIELD RIGHT-OF-WAY': "NO RT-OF-WAY",
+         'IMPROPER OVERTAKING/PASSING': "IMPR PASSING",
+         'EVASIVE ACTION DUE TO ANIMAL, OBJECT, NONMOTORIST': 'EVASIVE ACTION',
+         'ROAD ENGINEERING/SURFACE/MARKING DEFECTS': 'ROAD DEFECT',
+         'VISION OBSCURED (SIGNS, TREE LIMBS, BUILDINGS, ETC.)': 'VISION OBSCURED'
+    })
+    df_sample = df.sample(5000)
+
+    df_causes = df_sample[ (df_sample["CAUSE"] != 'UNABLE TO DETERMINE')
+                        &  (df_sample["CAUSE"] != 'NOT APPLICABLE') ].copy()
+
+    df_causes['ETRONICS'] = (
+        (df_sample["CAUSE"] == 'ELECTRONICS') |
+        (df_sample["CAUSE"] == 'TEXTING') |
+        (df_sample["CAUSE"] == 'CELL PHONE USE OTHER THAN TEXTING' )
+    ).map({True: "YES", False: "NO"})
+
+    df_causes['SPEEDING'] = (
+        (df_sample["CAUSE"] == 'FAILING TO REDUCE SPEED TO AVOID CRASH') |
+        (df_sample["CAUSE"] == 'SPEED BY CRASH') |
+        (df_sample["CAUSE"] == 'EXCEEDING SAFE SPEED FOR CONDITIONS' )
+    ).map({True: "YES", False: "NO"})
+
+    df_causes['WEATHER'] = (
+        (df_sample["CAUSE"] == 'WEATHER')
+    ).map({True: "YES", False: "NO"})
+
+    chart_etronics = alt.Chart(df_causes).mark_bar().encode(
+        x=alt.X('ETRONICS:N', 
+                title='ELECTRONICS-RELATED CRASHES (Yes/No)',
+                sort=["YES", "NO"]),
+        y=alt.Y('count():Q', title='Count'),
+        color=alt.Color('ETRONICS:N', legend=None)
+    ).properties(width=250)
+
+    chart_speeding = alt.Chart(df_causes).mark_bar().encode(
+        x=alt.X('SPEEDING:N', 
+                title='SPEEDING-RELATED CRASHES (Yes/No)',
+                sort=["YES", "NO"]),
+        y=alt.Y('count():Q', title='Count'),
+        color=alt.Color('SPEEDING:N', legend=None)
+    ).properties(width=250)
+
+    chart_weather = alt.Chart(df_causes).mark_bar().encode(
+        x=alt.X('WEATHER:N', 
+                title='WEATHER-RELATED CRASHES (Yes/No)',
+                sort=["YES", "NO"]),
+        y=alt.Y('count():Q', title='Count'),
+        color=alt.Color('WEATHER:N', legend=None)
+    ).properties(width=250)
+
+    top    = df_causes["CAUSE"].value_counts().nlargest(5).index
+    df_top = df_causes[df_causes['CAUSE'].isin(top)]
+
+    chart_causes = alt.Chart(df_top).mark_bar().encode(
+        x='CAUSE:N',
+        y=alt.Y('count():Q', title='Count'),
+        color=alt.Color('CAUSE:N', legend=None)
+    ).properties(
+        width=500,
+        title=alt.TitleParams(
+            text='Primary Causes of Crashes',
+            subtitle=f"Dates: {earliest_date} - {latest_date}",
+            fontSize=20,
+            subtitleFontSize=14,
+            anchor="middle")
+    )
+    empty_spacer = alt.Chart(pd.DataFrame({'x':[]})).mark_point().properties(width=80)
+    top_row = empty_spacer | chart_causes 
+    bottom_row = chart_etronics | chart_speeding | chart_weather
+    final_chart = top_row & bottom_row
+
+    if 'ipykernel' in sys.modules:
+        final_chart.show()
+    else:
+        st.altair_chart(final_chart, width='stretch'
+
 
     ######################################################
     #  PLOTLY SUNBURST
