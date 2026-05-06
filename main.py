@@ -483,7 +483,7 @@ def main():
     if 'ipykernel' in sys.modules:
         final_chart.show()
     else:
-        st.altair_chart(final_chart, width='stretch'
+        st.altair_chart(final_chart, width='stretch')
 
 
     ######################################################
