@@ -5,7 +5,8 @@
 Part of the project seeks to determine whether traffic control devices were effective
 in deterring traffic accidents in Chicago, which traffic control devices were most effective, and 
 whether the traffic device condition, weather, or lighting matters. This part of the project looks at the 
-`“TRAFFIC_CONTROL_DEVICE”`,`“DEVICE_CONDITION”`, `"WEATHER_CONDITION"`, and `"LIGHTING_CONDITION"` columns.
+`“TRAFFIC_CONTROL_DEVICE”`,`“DEVICE_CONDITION”`, `"WEATHER_CONDITION"`, `"LIGHTING_CONDITION"`, and
+`"PRIM_CONTRIBUTORY_CAUSE"`columns.
 
 Another part of the project does some time analysis on when the crashes occur. This part of the project
 looks at the `"CRASH_DAY_OF_WEEK"`, `"CRASH_HOUR"`, `"CRASH_MONTH"`, and `"CRASH_DATE"` columns.
@@ -36,7 +37,7 @@ compared with **41.1%** in areas with devices.
 | Distribution of Crashes | Distribution of Crashes % |
 | :---: | :---: |
 | ![Distribution of Crashes with and without control device](assets/fig1.png) | ![Distribution of Crashes with and without control device percentages](assets/fig2.png) |
-4. If traffic device signals are present at the crash site, the data show that traffic signals and
+3. If traffic device signals are present at the crash site, the data show that traffic signals and
 stop/flashers are the most common traffic control devices. The logarithmic scale shows that some device
 types occur at orders of magnitude more frequently than others.
 <p align="center"><img src="assets/fig3.png" width="700"></p>
@@ -47,7 +48,15 @@ accidents at the site occurred when the device was functioning properly. **1.1%*
 was functioning improperly. *Are drivers ignoring the traffic control devices? Or do traffic devices cause accidents?*
 <p align="center"><img src="assets/fig4.png" width="900"></p>
 
-5. **Most crashes, where a traffic control device was present, occurred when the weather was
+5. **Most crashes occurred in clear weather.** In fact, 83.4% of crashes occurred when the weather was clear. *Perhaps,
+this is saying that more people are driving when the weather is clear, and because more people are driving, more
+accidents are occurring.*
+   
+| Weather During Reported Crashes | Weather During Reported Crashes % |
+| :---: | :---: |
+| ![Clear or Inclement Weather](assets/figA_1.png) | ![Clear or Inclement Weather percentages](assets/figA_2.png) |
+
+6. **Most crashes, where a traffic control device was present, occurred when the weather was
 clear!** Rain contributed to a small percentage of accidents. Most other weather conditions (snow, clouds,
 winds, hail, etc.) contributed almost nothing to the increase in traffic crashes at the sight of the
 traffic control device. For example, when there was a flasher present, 
@@ -55,7 +64,14 @@ traffic control device. For example, when there was a flasher present,
 *Perhaps people are driving more carefully during many weather events or staying home.*
 <p align="center"><img src="assets/fig5.png" width="800"></p>
 
-6. **Examining the top 3 most common traffic control devices (no controls, red/green traffic devices, 
+7. **According to reports, the primary causes of crashes were drivers not exercising proper driving
+habits.** Randomly sampling 5,000 reports in the dataset, a particular sample shows that the
+three primary cause of crashes was driving despite not having the right of way, tailgating, and
+improper passing. The sampling also showed that most crashes were **not** related to
+electronics use, speeding, or weather.
+<p align="center"><img src="assets/figB.png" width="600"></p>
+
+8. **Examining the top 3 most common traffic control devices (no controls, red/green traffic devices, 
 stop/flashing light), most accidents occurred during daylight conditions, or when another source of light
 was present.** For example, if no control was present, **67.9%** of crashes occurred during daylight hours,
 **22.1%** occurred on a lighted road during darkness, and **5.4%** during darkness on an unlit road. 
@@ -64,23 +80,23 @@ daylight hours, and **25.3%** during darkness on a lighted road. *Perhaps the am
 daylight hours contributes to the increased crash rate.*
 <p align="center"><img src="assets/fig6.png" width="600"></p>
 
-7. Sampling 5000 crash instances, the graph shows that the hours of the highest number of crashes are
+9. Sampling 5000 crash instances, the graph shows that the hours of the highest number of crashes are
 5 pm, and then at 3 pm and 4 pm. **The most crashes happened during evening rush hours.** (Please note,
 this is a sampling, and each time this data is sampled, the results may vary.)
 <p align="center"><img src="assets/fig7.png" width="600"></p>
 
-8. Sampling 5000 crash instances, the graph shows that the days of the highest number of crashes are 
+10. Sampling 5000 crash instances, the graph shows that the days of the highest number of crashes are 
 Fridays. The safest day to travel in Chicago is Sunday. **People are tired at 
 the end of the week, rushing home, and causing crashes. To be safe, travel on a Sunday.** (Please note,
 this is a sampling, and each time this data is sampled, the results may vary.)
 <p align="center"><img src="assets/fig8.png" width="600"></p>
 
-9. Sampling 5000 crash instances, the graph shows that the months with the highest number of crashes 
+11. Sampling 5000 crash instances, the graph shows that the months with the highest number of crashes 
 are **Sep at 9.3%**, then **Aug at 9.1%**. The lowest number of crashes occurs in **Jan at 7.6%.** This data is not normalized
 according to the number of days in the month. (Please note, this is a sampling, and each time this data is sampled, the results may vary.)
 <p align="center"><img src="assets/fig9.png" width="750"></p>
 
-10. Sampling 5000 crash instances, the graph shows that the lowest amount of traffic crashes 
+12. Sampling 5000 crash instances, the graph shows that the lowest amount of traffic crashes 
 occurred in **2020** during the COVID epidemic. No surprise. The 2nd lowest occurred in 2021 
 when some COVID restrictions were still in effect. 2020-2021 was when many people were given 
 the opportunity to work remotely. The highest amount of traffic crashes occurred in 2018, followed 
@@ -88,7 +104,7 @@ by the 2nd highest in 2019. *Why are 2018 and 2019 such bad years for traffic cr
 this is a sampling, and each time this data is sampled, the results may vary.)
 <p align="center"><img src="assets/fig10.png" width="750"></p>
 
-11. Sampling 5000 crash instances, our heatmap graph shows that most crashes occur at **16:00/Friday** *(people
+13. Sampling 5000 crash instances, our heatmap graph shows that most crashes occur at **16:00/Friday** *(people
 rushing home for the weekend)*, then **15:00/Thursday** *(starting to wish for the weekend to come quickly)*.
 <p align="center"><img src="assets/fig11.png" width="900"></p>
 
